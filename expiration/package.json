@@ -1,0 +1,35 @@
+{
+  "name": "expiration",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.test.ts' --exec 'ts-node' src/index.ts",
+    "test": "jest --watchAll --no-cache",
+    "update:common": "yarn remove @rtshop/common && yarn add @rtshop/common"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "setupFilesAfterEnv": [
+      "./src/test/setup.ts"
+    ]
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@rtshop/common": "^1.0.19",
+    "@types/bull": "^3.13.0",
+    "bull": "^3.14.0",
+    "node-nats-streaming": "^0.3.2",
+    "nodemon": "^2.0.4",
+    "ts-node": "^8.10.1",
+    "typescript": "^3.9.3"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.2.3",
+    "jest": "^26.0.1",
+    "ts-jest": "^26.0.0"
+  }
+}

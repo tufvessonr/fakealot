@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+        - name: auth
+          image: <add gke project reference here>/auth
+          env:
+            - name: MONGO_URI
+              value: 'mongodb://mongo-0.mongo,mongo-1.mongo,mongo-2.mongo:27017/auth'
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+            - name: ADMIN_USER
+              valueFrom:
+                secretKeyRef:
+                  name: admin-user-secret
+                  key: ADMIN_USER
+            - name: ADMIN_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: admin-pass-secret
+                  key: ADMIN_PASS
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-srv
+spec:
+  selector:
+    app: auth
+  ports:
+    - name: auth
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

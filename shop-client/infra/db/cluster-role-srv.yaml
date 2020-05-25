@@ -1,0 +1,31 @@
+# RoleBinding is needed otherwise since the default service account doesn't have have enough permissions and it causes the mongo pod to loop crash
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: default-view
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view
+subjects:
+  - kind: ServiceAccount
+    name: default
+    namespace: default
+
+---
+
+# NEEDED to create mongo stateful set
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: ClusterRole
+# metadata:
+#   namespace: default
+#   name: service-reader
+# rules:
+# - apiGroups: [""]
+#   resources: ["services"]
+#   verbs: ["get", "watch", "list"]
+
+# Needed to allow default system account to use the above role
+# kubectl create clusterrolebinding service-reader-pod \
+# --clusterrole=service-reader  \
+# --serviceaccount=default:default

@@ -1,0 +1,23 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+build:
+  # local:
+  #   push: false
+
+  googleCloudBuild:
+    projectId: <add gke project name here>
+  artifacts:
+    - image: <add gke project reference here>/order
+      context: order
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '/**/*.js'
+            dest: .
+
+        
